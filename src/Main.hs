@@ -13,7 +13,7 @@ drawRect x y w h = do
     fill
 
 drawHistogram :: Int -> Int -> ((Int, Int) -> (Int, Int)) -> (Int, Int) -> Int -> Int -> Render ()
-drawHistogram w h f (x1, x2) n m = go f (x1, x2) 1 n
+drawHistogram w h f (x1, x2) n m = setSourceRGB 1 1 1 >> rectangle 0 0 w' h' >> fill >> go f (x1, x2) 1 n
     where
         w'  = fromIntegral w
         h'  = fromIntegral h
@@ -21,11 +21,11 @@ drawHistogram w h f (x1, x2) n m = go f (x1, x2) 1 n
         m' = fromIntegral m
         myheight x = (fromIntegral x)*h'/m'
         go f (x1, x2) m n | m==1      = do
-            drawRect ((fromIntegral (m-1))*w'') (myheight x1) w'' (myheight x1)
+            drawRect ((fromIntegral (m-1))*w'') (h' - myheight x1) w'' (myheight x1)
             go f (f (x1, x2)) (m+1) n
 
         go f (x1, x2) m n | m<=n      = do
-             drawRect ((fromIntegral (m-1))*w'') (myheight x2) w'' (myheight x2)
+             drawRect ((fromIntegral (m-1))*w'') (h' - myheight x2) w'' (myheight x2)
              go f (f (x1, x2)) (m+1) n
 
         go f (x1, x2) m n | otherwise = return ()
