@@ -31,24 +31,18 @@ drawHistogram w h f (x1, x2) n m = go f (x1, x2) 1 n
         go f (x1, x2) m n | otherwise = return ()
 
 recalc :: Builder -> IO ()
-recalc builder = do
-    entrya  <- builderGetObject builder castToEntry "entrya"
-    entryb  <- builderGetObject builder castToEntry "entryb"
-    entryc  <- builderGetObject builder castToEntry "entryc"
-    entrym  <- builderGetObject builder castToEntry "entrym"
-    entryx1 <- builderGetObject builder castToEntry "entryx1"
-    entryx2 <- builderGetObject builder castToEntry "entryx2"
-    sa      <- entryGetText entrya
-    sb      <- entryGetText entryb
-    sc      <- entryGetText entryc
-    sm      <- entryGetText entrym
-    sx1     <- entryGetText entryx1
-    sx2     <- entryGetText entryx2
+recalc bulder = do
+    let parseText label = do
+        entry <- builderGetObject builder castToEntry label
+        text  <- entryGetText entry
+        return $ read text
+      labels = ["a", "b", "c", "m", "x1", "x2"]
+    [a, b, c, m, x1, x2] <- mapM parseText ["entry" ++ l | l <- labels]
     area    <- builderGetObject builder castToDrawingArea "drawingarea1"
     w       <- widgetGetAllocatedWidth area
     h       <- widgetGetAllocatedHeight area
-    putStrLn $ research (gen (read sa) (read sb) (read sc) (read sm)) ((read sx1), (read sx2)) (read sm)
-    area `on` draw $ (drawHistogram w h (gen (read sa) (read sb) (read sc) (read sm)) ((read sx1), (read sx2)) 100 (read sm))
+    putStrLn $ research (gen a b c m) (x1, x2) m
+    area `on` draw $ (drawHistogram w h (gen a b c m) (x1, x2) 100 m)
     widgetQueueDraw area
 
 main :: IO ()
