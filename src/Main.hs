@@ -31,12 +31,12 @@ drawHistogram w h f (x1, x2) n m = go f (x1, x2) 1 n
         go f (x1, x2) m n | otherwise = return ()
 
 recalc :: Builder -> IO ()
-recalc bulder = do
+recalc builder = do
     let parseText label = do
-        entry <- builderGetObject builder castToEntry label
-        text  <- entryGetText entry
-        return $ read text
-      labels = ["a", "b", "c", "m", "x1", "x2"]
+            entry <- builderGetObject builder castToEntry label
+            text  <- entryGetText entry
+            return $ read text
+        labels = ["a", "b", "c", "m", "x1", "x2"]
     [a, b, c, m, x1, x2] <- mapM parseText ["entry" ++ l | l <- labels]
     area    <- builderGetObject builder castToDrawingArea "drawingarea1"
     w       <- widgetGetAllocatedWidth area

@@ -18,7 +18,7 @@ period f x0 = z `seq` (go2 (f z) 1, z)
             | otherwise = go2 (f x) (n+1)
 
 preperiod :: (Eq a) => (a -> a) -> a -> Int
-preperiod f x0 = z `seq` go1 x0 z 1
+preperiod f x0 = z `seq` go1 x0 z 0
   where
     z = go2 x0 0 (fst $ (period f x0))
     go1 x y n   | x==y      = n
