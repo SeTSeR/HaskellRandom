@@ -16,9 +16,9 @@ drawRHistogram w h f (x1, x2) m = setSourceRGB 1 1 1 >> rectangle 0 0 w' h' >> f
         m'  = fromIntegral m
         get x1 m = ((x1 `mod` m)*20) `div` m
         go1 f (x1, x2) n m arr | n==1      = arr
-                               | n==400    = go1 f (f (x1, x2)) (n-1) m (arr // [((get x1 m), (arr!(get x1 m) + 1))])
-                               | otherwise = go1 f (f (x1, x2)) (n-1) m (arr // [((get x2 m), (arr!(get x2 m) + 1))])
-        myheight x1 m = (fromIntegral x1)*20/(fromIntegral m)
+                               | n==400    = go1 f (f (x1, x2)) (n-1) m (arr // [(get x1 m, (arr! get x1 m + 1))])
+                               | otherwise = go1 f (f (x1, x2)) (n-1) m (arr // [((get x2 m), (arr! get x2 m + 1))])
+        myheight x1 m = (fromIntegral x1)*h'/(fromIntegral m)
         drawRect x y w h = do
             setSourceRGB 0 0 1
             rectangle x y w h

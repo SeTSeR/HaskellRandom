@@ -33,9 +33,9 @@ quality f (x1, x2) m = qsum $ go1 (x1, x2) 1 400 m (V.replicate 20 0)
     qsum arr | (V.length arr) == 0 = 0
              | otherwise = (cnt (V.head arr)) + qsum (V.tail arr)
     get x1 m = ((x1 `mod` m)*20) `div` m
-    go1 (x1, x2) n lim m arr | n==lim    = arr
-                             | n==1      = go1 (f (x1, x2)) (n+1) lim m (arr // [((get x1 m), (arr!(get x1 m)) + 1)])
-                             | otherwise = go1 (f (x1, x2)) (n+1) lim m (arr // [((get x2 m), (arr!(get x2 m)) + 1)])
+    go1 (x1, x2) n lim m arr | n==(lim+1) = arr
+                             | n==1       = go1 (f (x1, x2)) (n+1) lim m (arr // [(get x1 m, (arr! get x1 m) + 1)])
+                             | otherwise  = go1 (f (x1, x2)) (n+1) lim m (arr // [(get x2 m, (arr! get x2 m) + 1)])
 
 research :: ((Int, Int) -> (Int, Int)) -> (Int, Int) -> Int -> String                                                                         
 research gener x0 d = "p: "  ++ (show $ fst $ period gener x0) ++ "\n" ++
